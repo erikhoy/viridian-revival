@@ -2,29 +2,19 @@
 <?php if(!$session->is_signed_in()) {redirect("login.php");} ?>
 <?php 
     $product = new Product();
-    $description = new Description();
-    $bins = Bin::find_all();
+
     if(isset($_POST['create'])) {
         if($product) {
             $product->name = $_POST['name'];
             $product->purchase_date = $_POST['purchase_date'];
             $product->purchase_price = $_POST['purchase_price'];
             $product->source = $_POST['source'];
-            $product->platform_id = 6;
             $product->status_id = 1;
-            $product->bin_id = $_POST['bin_id'];
             $session->message("The product {$product->name} has been created");
             $product->save();
-	}
-	if($description) {
-            $description->body = "";
-    	    $description->product_id = $database->the_insert_id();
-    	    $description->save();
             redirect("unlisted_products.php");
-            
         }
     }
-    
 ?>
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -57,14 +47,6 @@
                         <div class="form-group">
                             <label for="source">Source</label>
                             <input type="text" name="source" class="form-control">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="bin_id">Bin Number</label><br>
-                            <select name="bin_id">
-                                <?php foreach($bins as $bin): ?>
-                                    <option class="form-control" value="<?php echo $bin->id; ?>"><?php echo $bin->name; ?></option>
-                                <?php endforeach; ?>
-                            </select>
                         </div>
                         <div class="form-group">
                             <input type="submit" name="create" class="btn btn-primary pull-right">

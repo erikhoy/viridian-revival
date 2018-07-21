@@ -4,14 +4,12 @@
 <?php $products = Product::find_all(); ?>
 <?php 
     if(isset($_POST['create'])) {        
-        echo "here";
         if($review) {
             $review->author = $_POST['author'];
             $review->stars = $_POST['stars'];
             $review->body = $_POST['body'];
             $review->product_id = $_POST['product_id'];
             $session->message("The review by {$review->author} has been created");
-            echo $review->author."<br>".$review->body."<br>".$review->stars;
             $review->save();
             redirect("all_reviews.php");
         }

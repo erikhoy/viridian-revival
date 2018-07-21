@@ -1,24 +1,24 @@
+<?php $page = "Contact"; ?>
 <?php include("includes/header.php"); ?>
 <?php 
 if(isset($_POST['submit'])) {
-    $to         = "erikshoy@gmail.com";
+    $to         = "erik@viridianrevival.com";
     $author     = $_POST['name'];
     $email      = $_POST['email'];
-    $subject    = "This is a test!!!";
-    $msg        = "<html>
+    $subject    = "Website Contact Form";
+    $body      	= "<html>
                         <head>
                             <title>HTML email</title>
                         </head>
                         <body>
-                            <p>This email contains HTML Tags!</p>
                             <table>
                                 <tr>
-                                    <th>Firstname</th>
-                                    <th>Lastname</th>
+                                    <th>Name</th>
+                                    <th>Message</th>
                                 </tr>
                                 <tr>
-                                    <td>John</td>
-                                    <td>Doe</td>
+                                    <td>".$author."</td>
+                                    <td>".$_POST['msg']."</td>
                                 </tr>
                             </table>
                         </body>
@@ -29,12 +29,11 @@ if(isset($_POST['submit'])) {
     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
     // More headers
-    $headers .= 'From: <webmaster@example.com>' . "\r\n";
-    $headers .= 'Cc: myboss@example.com' . "\r\n";
+    $headers .= 'From: <'.$_POST['email'].'>' . "\r\n";
 
-    $msg = wordwrap($_POST['msg'], 70);
+    //$body = wordwrap($_POST['msg'], 70);
 
-    if(mail($to,$subject,$msg,$headers)) {
+    if(mail($to,$subject,$body,$headers)) {
         $session->message("Thank you! Your message has been sent.");
     } else {
         $session->message("There was a problem. Please try again.");
@@ -68,6 +67,7 @@ if(isset($_POST['submit'])) {
                         <div class="form-group">
                             <input type="submit" name="submit" class="btn btn-primary pull-right">
                         </div>
+                        <div class="g-recaptcha" data-sitekey="6Lfsw1EUAAAAANcUu5qwt6-3o9wa2QnCwVBHlQ4h"></div>
                     </div>
                 </form>
             </div>
