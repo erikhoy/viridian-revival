@@ -6,13 +6,13 @@
     $bins = Bin::find_all();
     if(isset($_POST['create'])) {
         if($product) {
-            $product->name = $_POST['name'];
-            $product->purchase_date = $_POST['purchase_date'];
-            $product->purchase_price = $_POST['purchase_price'];
-            $product->source = $_POST['source'];
+            $product->name = htmlspecialchars($_POST['name'], ENT_QUOTES, 'utf-8');
+            $product->purchase_date = htmlspecialchars($_POST['purchase_date'], ENT_QUOTES, 'utf-8');
+            $product->purchase_price = htmlspecialchars($_POST['purchase_price'], ENT_QUOTES, 'utf-8');
+            $product->source = htmlspecialchars($_POST['source'], ENT_QUOTES, 'utf-8');
             $product->platform_id = 6;
             $product->status_id = 1;
-            $product->bin_id = $_POST['bin_id'];
+            $product->bin_id = htmlspecialchars($_POST['bin_id'], ENT_QUOTES, 'utf-8');
             $session->message("The product {$product->name} has been created");
             $product->save();
 	}
