@@ -6,10 +6,10 @@ $expense = new Expense();
 if(isset($_POST['create'])) {
     
     if($expense) {
-        $expense->cost = $_POST['cost'];
-        $expense->date = $_POST['date'];
-        $expense->description = $_POST['description'];
-        $expense->payee = $_POST['payee'];
+        $expense->cost = htmlspecialchars($_POST['cost'], ENT_QUOTES, 'utf-8');
+        $expense->date = htmlspecialchars($_POST['date'], ENT_QUOTES, 'utf-8');
+        $expense->description = htmlspecialchars($_POST['description'], ENT_QUOTES, 'utf-8');
+        $expense->payee = htmlspecialchars($_POST['payee'], ENT_QUOTES, 'utf-8');
         
         // $user->set_file($_FILES['user_image']);
 
