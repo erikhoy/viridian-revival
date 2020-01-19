@@ -1,25 +1,25 @@
-<?php include("includes/header.php"); ?>
-<?php if(!$session->is_signed_in()) {redirect("login.php");} ?>
 <?php 
-$expense = new Expense();
+    include("includes/header.php");
 
-if(isset($_POST['create'])) {
-    
-    if($expense) {
-        $expense->cost = htmlspecialchars($_POST['cost'], ENT_QUOTES, 'utf-8');
-        $expense->date = htmlspecialchars($_POST['date'], ENT_QUOTES, 'utf-8');
-        $expense->description = htmlspecialchars($_POST['description'], ENT_QUOTES, 'utf-8');
-        $expense->payee = htmlspecialchars($_POST['payee'], ENT_QUOTES, 'utf-8');
-        
-        // $user->set_file($_FILES['user_image']);
+    if(!$session->is_signed_in()) {
+        redirect("login.php");
+    }
 
-        // $user->upload_photo();
+    $expense = new Expense();
+
+    if(isset($_POST['create'])) {
+        if($expense) {
+            $expense->cost = filter_var($_POST['cost'], FILTER_SANITIZE_NUMBER_FLOAT);
+        $expense->date = filter_var($_POST['date'], FILTER_SANITIZE_STRING);
+        $expense->description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
+        $expense->payee = filter_var($_POST['payee'], FILTER_SANITIZE_STRING);
         $session->message("The expense to {$expense->payee} has been created");
         $expense->save();
         redirect("expenses.php");
     }
 }
 ?>
+
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->        
@@ -67,4 +67,4 @@ if(isset($_POST['create'])) {
     <!-- /.container-fluid -->        
 </div>
 <!-- /#page-wrapper -->
-<?php include("includes/footer.php"); ?>
+<?php include("includes/footer.php");
