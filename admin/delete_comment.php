@@ -1,19 +1,20 @@
-<?php include("includes/init.php"); ?>
-<?php if(!$session->is_signed_in()) {redirect("login.php");} ?>
-<?php
+<?php 
+  include("includes/init.php");
 
-if(empty($_GET['id'])) {
+  if(!$session->is_signed_in()) {
+    redirect("login.php");
+  }
+  
+  if(empty($_GET['id'])) {
     redirect("comments.php");
-}
+  }
 
-$comment = Comment::find_by_id($_GET['id']);
+  $comment = Comment::find_by_id(filter_var($_GET['id'], FILTER_SANITIZE_INT));
 
-if($comment) {
+  if($comment) {
     $comment->delete();
     $session->message("The comment with ID {$comment->id} has been deleted");
     redirect("comments.php");
-} else {
-    redirect("comments.php");
-}
+  } 
 
-?>
+  redirect("comments.php");
