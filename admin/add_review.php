@@ -1,25 +1,24 @@
 <?php 
-    include("includes/header.php");
+  include("includes/header.php");
     
-    if(!$session->is_signed_in()) {
-        redirect("login.php");
-    }
+  if(!$session->is_signed_in()) {
+    redirect("login.php");    
+  }
 
-    $review = new Review();
-    $products = Product::find_all();
+  $review = new Review();
+  $products = Product::find_all();
  
-    if(isset($_POST['create'])) { 
-        if($review) {
-            $review->author = htmlspecialchars($_POST['author'], ENT_QUOTES, 'utf-8');
-            $review->stars = htmlspecialchars($_POST['stars'], ENT_QUOTES, 'utf-8');
-            $review->body = htmlspecialchars($_POST['body'], ENT_QUOTES, 'utf-8');
-            $review->product_id = htmlspecialchars($_POST['product_id'], ENT_QUOTES, 'utf-8');
-            $session->message("The review by {$review->author} has been created");
-            echo $review->author."<br>".$review->body."<br>".$review->stars;
-            $review->save();
-            redirect("all_reviews.php");
-        }
+  if(isset($_POST['create'])) { 
+    if($review) {
+      $review->author = filter_var($_POST['author'], FILTER_SANITIZE_STRING);
+      $review->stars = filter_var($_POST['stars'], FILTER_SANITIZE_INT);
+      $review->body = filter_var($_POST['body'], FILTER_SANITIZE_STRING);
+      $review->product_id = filter_var($_POST['product_id'], FILTER_SANITIZE_INT);
+      $session->message("The review by {$review->author} has been created");
+      $review->save();
+      redirect("all_reviews.php");
     }
+  }
 ?>
 
 <!-- Navigation -->
