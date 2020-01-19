@@ -1,19 +1,19 @@
-<?php include("includes/header.php"); ?>
-<?php if(!$session->is_signed_in()) {redirect("login.php");} ?>
 <?php 
+    include("includes/header.php");
+
+    if(!$session->is_signed_in()) {
+        redirect("login.php");
+    }
+ 
     $user = new User();
 
-    if(isset($_POST['create'])) {
-        
+    if(isset($_POST['create'])) {   
         if($user) {
-            $user->username = $_POST['username'];
+            $user->username = htmlspecialchars($_POST['username'], ENT_QUOTES, 'utf-8');
             $user->password = crypt($_POST['password']);
-            // $user->password_hash = crypt($password);
-            $user->last_name = $_POST['last_name'];
-            $user->first_name = $_POST['first_name'];
-            
+            $user->last_name = htmlspecialchars($_POST['last_name'], ENT_QUOTES, 'utf-8');
+            $user->first_name = htmlspecialchars($_POST['first_name'], ENT_QUOTES, 'utf-8');
             $user->set_file($_FILES['user_image']);
-
             $user->upload_photo();
             $session->message("The user {$user->username} has been created");
             $user->save();
@@ -21,6 +21,7 @@
         }
     }
 ?>
+
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -68,4 +69,4 @@
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
-<?php include("includes/footer.php"); ?>
+<?php include("includes/footer.php");
