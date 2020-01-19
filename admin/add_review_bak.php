@@ -1,14 +1,19 @@
-<?php include("includes/header.php"); ?>
-<?php if(!$session->is_signed_in()) {redirect("login.php");} ?>
-<?php $review = new Review(); ?>
-<?php $products = Product::find_all(); ?>
 <?php 
+    include("includes/header.php");
+
+    if(!$session->is_signed_in()) {
+        redirect("login.php");
+    }
+
+    $review = new Review();
+    $products = Product::find_all();
+
     if(isset($_POST['create'])) {        
         if($review) {
-            $review->author = $_POST['author'];
-            $review->stars = $_POST['stars'];
-            $review->body = $_POST['body'];
-            $review->product_id = $_POST['product_id'];
+            $review->author = htmlspecialchars($_POST['author'], ENT_QUOTES, 'utf-8');
+            $review->stars = htmlspecialchars($_POST['stars'], ENT_QUOTES, 'utf-8');
+            $review->body = htmlspecialchars($_POST['body'], ENT_QUOTES, 'utf-8');
+            $review->product_id = htmlspecialchars($_POST['product_id'], ENT_QUOTES, 'utf-8');
             $session->message("The review by {$review->author} has been created");
             $review->save();
             redirect("all_reviews.php");
@@ -63,4 +68,4 @@
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
-<?php include("includes/footer.php"); ?>
+<?php include("includes/footer.php");
