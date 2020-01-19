@@ -1,21 +1,25 @@
-<?php include("includes/header.php"); ?>
-<?php if(!$session->is_signed_in()) {redirect("login.php");} ?>
 <?php 
-    $product = new Product();
+  include("includes/header.php");
 
-    if(isset($_POST['create'])) {
-        if($product) {
-            $product->name = htmlspecialchars($_POST['name'], ENT_QUOTES, 'utf-8');
-            $product->purchase_date = htmlspecialchars($_POST['purchase_date'], ENT_QUOTES, 'utf-8');
-            $product->purchase_price = htmlspecialchars($_POST['purchase_price'], ENT_QUOTES, 'utf-8');
-            $product->source = htmlspecialchars($_POST['source'], ENT_QUOTES, 'utf-8');
-            $product->status_id = 1;
-            $session->message("The product {$product->name} has been created");
-            $product->save();
-            redirect("unlisted_products.php");
-        }
+  if(!$session->is_signed_in()) {
+    redirect("login.php");}
+
+  $product = new Product();
+
+  if(isset($_POST['create'])) {
+    if($product) {
+      $product->name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+      $product->purchase_date = filter_var($_POST['purchase_date'], FILTER_SANITIZE_STRING);
+      $product->purchase_price = filter_var($_POST['purchase_price'], FILTER_SANITIZE_DOUBLE_FLOAT);
+      $product->source = filter_var($_POST['source'], FILTER_SANITIZE_STRING);
+      $product->status_id = 1;
+      $session->message("The product {$product->name} has been created");
+      $product->save();
+      redirect("unlisted_products.php");
     }
+  }
 ?>
+
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display --> 
@@ -60,4 +64,4 @@
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
-<?php include("includes/footer.php"); ?>
+<?php include("includes/footer.php");
