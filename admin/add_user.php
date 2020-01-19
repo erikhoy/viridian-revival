@@ -1,25 +1,25 @@
 <?php 
-    include("includes/header.php");
+  include("includes/header.php");
 
-    if(!$session->is_signed_in()) {
-        redirect("login.php");
-    }
+  if (!$session->is_signed_in()) {
+    redirect("login.php");
+  }
  
-    $user = new User();
+  $user = new User();
 
-    if(isset($_POST['create'])) {   
-        if($user) {
-            $user->username = htmlspecialchars($_POST['username'], ENT_QUOTES, 'utf-8');
-            $user->password = crypt($_POST['password']);
-            $user->last_name = htmlspecialchars($_POST['last_name'], ENT_QUOTES, 'utf-8');
-            $user->first_name = htmlspecialchars($_POST['first_name'], ENT_QUOTES, 'utf-8');
-            $user->set_file($_FILES['user_image']);
-            $user->upload_photo();
-            $session->message("The user {$user->username} has been created");
-            $user->save();
-            redirect("users.php");
-        }
+  if (isset($_POST['create'])) {   
+    if ($user) {
+      $user->username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
+      $user->password = crypt($_POST['password']);
+      $user->last_name = filter_var($_POST['last_name'], FILTER_SANITIZE_STRING);
+      $user->first_name = filter_var($_POST['first_name'], FILTER_SANITIZE_STRING);
+      $user->set_file($_FILES['user_image']);
+      $user->upload_photo();
+      $session->message("The user {$user->username} has been created");
+      $user->save();
+      redirect("users.php");
     }
+  }
 ?>
 
 <!-- Navigation -->
