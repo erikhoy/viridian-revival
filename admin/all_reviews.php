@@ -1,12 +1,17 @@
-<?php include("includes/header.php"); ?>
-<?php if(!$session->is_signed_in()) {redirect("login.php");} ?>
-<?php
-    $page               = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
-    $items_per_page     = 25;
-    $items_total_count  = Review::count_all();
-    $paginate           = new Paginate($page, $items_per_page, $items_total_count);
-    $reviews            = Review::find_all(); 
+<?php 
+  include("includes/header.php");
+
+  if(!$session->is_signed_in()) {
+    redirect("login.php");
+  }
+
+  $page = !empty(filter_var($_GET['page'], FILTER_SANITIZE_INT)) ? (int)filter_var($_GET['page'], FILTER_SANITIZE_INT) : 1;
+    $items_per_page = 25;
+    $items_total_count = Review::count_all();
+    $paginate = new Paginate($page, $items_per_page, $items_total_count);
+    $reviews = Review::find_all(); 
 ?>
+
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -78,4 +83,4 @@
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper --> 
-<?php include("includes/footer.php"); ?>
+<?php include("includes/footer.php");
